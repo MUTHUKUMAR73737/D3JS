@@ -1,0 +1,10 @@
+button  {
+  box-shadow: none !important;
+}
+::ng-deep .tooltip {
+  font-weight: bold;
+  padding: 12px;
+  background: #04404b;
+  color: #fff;
+  border-radius: 2px;
+}
