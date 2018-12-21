@@ -1,0 +1,12 @@
+svg {
+  border: 1px solid steelblue;
+  margin: 5px;
+}
+
+.container {
+  display: flex;
+}
+
+.container1 {
+  display: flex;
+}
