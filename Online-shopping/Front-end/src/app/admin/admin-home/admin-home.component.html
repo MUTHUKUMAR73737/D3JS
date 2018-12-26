@@ -1,0 +1,50 @@
+<!-- <p>
+  admin-home works!
+</p>
+
+<div class="">
+
+</div> -->
+
+
+
+<!-- <p-menu [model]="items"></p-menu> -->
+
+<!-- <router-outlet></router-outlet> -->
+<div class="wrapper">
+  <!-- Sidebar  -->
+  <nav id="sidebar">
+      <div class="sidebar-header">
+          <h3>Admin Home</h3>
+          <strong>Home</strong>
+      </div>
+
+      <div class="line"></div>
+      <ul class="list-unstyled components">
+          <li class="active">
+              <a routerLink="admin" >
+                  <i class="fas fa-home"></i>
+                  Home
+              </a>
+          </li>
+          <!-- <div class="line"></div> -->
+          <li >
+              <a routerLink="addProduct"  >
+                  <i class="far fa-plus-square"></i>
+                 Create Product
+              </a>
+          </li>
+          <!-- <div class="line"></div> -->
+          <li >
+              <a routerLink="viewProduct"  >
+                  <!-- <i class="far fa-plus-square"></i> -->
+                  <i class="far fa-eye"></i>
+                 View Product
+              </a>
+          </li>
+      </ul>
+  </nav>
+  <div id="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

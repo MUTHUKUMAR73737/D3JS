@@ -1,0 +1,136 @@
+<!-- <div class="super-admin-home-container"> -->
+
+
+<!-- <div class="super-admin-side-nav-container">
+     <p-menu [model]="items"></p-menu> -->
+<!-- </div> -->
+
+
+
+<!-- <div class="main-container"> -->
+<ng-container *ngFor="let order of orderSummaryCount">
+
+<div class="cart-container">
+  <div class="count-order-container">
+    <div class="item-count">
+      <i class="material-icons shop-icon">add_shopping_cart</i>
+      <h6 id="summary-count">{{order.purchasedCount}}</h6>
+    </div>
+    <h5>ORDER</h5>
+  </div>
+  <div class="count-shipping-container">
+    <div class="item-count">
+      <i class="fas fa-shipping-fast fa-2x fa-cog"></i>
+      <h6 id="summary-count">{{order.shippedCount}}</h6>
+    </div>
+    <h5>SHIPPING</h5>
+  </div>
+  <div class="count-delivery-container">
+    <div class="item-count">
+      <i class="fas fa-truck fa-2x fa-cog"></i>
+      <h6 id="summary-count">{{order.deliveredCount}}</h6>
+    </div>
+    <h5>DELIVERY</h5>
+  </div>
+  <div class="count-return-container">
+    <div class="item-count">
+      <i class="fas fa-undo-alt fa-2x fa-cog"></i>
+      <h6 id="summary-count">{{order.undeliveredCount}}</h6>
+    </div>
+    <h5>UNDELIVERED OR RETURN</h5>
+  </div>
+  <div></div>
+</div>
+</ng-container>
+
+
+<!-- <router-outlet></router-outlet> -->
+
+<div class="chart-container">
+    <div class="summary-chart-container">
+        <div class="summary-title">
+          <h4>ORDER SUMMARY JAN 2018 - DEC 2018 </h4>
+        </div>
+        <p-chart type="line" [data]="data"></p-chart>
+      </div>
+      <div class="user-chart-container">
+          <div class="summary-title">
+              <h4>CUSTOMER</h4>
+            </div>
+            <p-chart type="pie" [data]="countData"></p-chart>
+      </div>
+</div>
+<p-table [columns]="cols" [value]="totalAdmin" selectionMode="single" [(selection)]="selectedAdmin" (onRowSelect)="onRowSelect($event)"
+  [paginator]="true" [rows]="10">
+  <ng-template pTemplate="caption" let-rowData>
+
+  </ng-template>
+  <ng-template pTemplate="caption">
+      <div class="data-table-caption" style="text-align:left">
+          <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add"></button>
+        <h6>List of Administrator</h6>
+        </div>
+
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        {{col.header}}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr [pSelectableRow]="rowData">
+      <td *ngFor="let col of columns">
+        {{rowData[col.field]}}
+      </td>
+    </tr>
+  </ng-template>
+
+</p-table>
+
+<p-dialog header="Admin Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+  [width]="400">
+  <form [formGroup]="adminForm">
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="vin">Username</label>
+        </div>
+        <div class="ui-g-8">
+          <input pInputText (blur)="validateUsername()" formControlName="username" pTooltip="Please enter administrator username" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="year">Email</label>
+        </div>
+        <div class="ui-g-8">
+          <input pInputText (blur)="validateEmail()" formControlName="email" pTooltip="Please enter administrator email " />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="brand">Phone number</label>
+        </div>
+        <div class="ui-g-8">
+          <p-inputMask formControlName="phone" (onBlur)="validatePhone()" mask="9999999999" slotChar="" pTooltip="Please enter your registered mobile number"></p-inputMask>
+        </div>
+      </div>
+    </div>
+
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix admin-button-container">
+        <button type="button" class="btn-delete" pButton icon="fa fa-close" disabled="{{enableDeleteButton}}" (click)="delete()"
+          label="Delete"></button>
+        <button type="button" class="btn-save" pButton icon="fa fa-check" [disabled]="adminForm.invalid" (click)="save()"
+          label="Save"></button>
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>
+<!-- </div>
+</div> -->
+
+<p-toast></p-toast>

@@ -1,0 +1,99 @@
+
+
+<p-table #dt [columns]="cols" [value]="totalAdminProductResponse" [paginator]="true" [rows]="10" dataKey="productName">
+
+
+  <ng-template pTemplate="caption">
+    <div style="text-align: right">
+        <button type="button" pButton icon="pi pi-file" iconPos="left" label="Export Data" (click)="dt.exportCSV()" style="float:left"></button>
+      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+      <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+        style="width:auto">
+    </div>
+
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 3em"></th>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+      <th style="width: 3em"></th>
+      <th style="width: 3em"></th>
+    </tr>
+    <tr>
+      <th style="width: 3em"></th>
+      <th *ngFor="let col of columns" [ngSwitch]="col.field">
+        <!-- <input *ngSwitchCase="'productName'" pInputText type="text" (input)="dt.filter($event.target.value, col.field, col.filterMatchMode)"> -->
+        <p-dropdown *ngSwitchCase="'productType'" [options]="type" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
+        <p-dropdown *ngSwitchCase="'productBrand'" [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
+        <div *ngSwitchCase="'productPrice'">
+          price < {{priceFilter}} <i class="fa fa-close" (click)="priceFilter=null;dt.filter(null, col.field, col.filterMatchMode)"
+            style="cursor:pointer" *ngIf="priceFilter"></i>
+            <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="priceFilter" [min]="1000" [max]="30000"
+              (onChange)="onPriceChange($event, dt)"></p-slider>
+        </div>
+        <!-- <p-dropdown *ngSwitchCase="'productColor'" [options]="colors" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown> -->
+      </th>
+      <th style="width: 3em"></th>
+      <th style="width: 3em"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
+    <tr [pSelectableRow]="rowData">
+      <td>
+        <a href="#" [pRowToggler]="rowData">
+          <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+        </a>
+      </td>
+      <td *ngFor="let col of columns">
+        {{rowData[col.field]}}
+      </td>
+
+      <td>
+        <a (click)="updateProduct(rowData.productName)"><i class="material-icons">search</i></a>
+      </td>
+      <td>
+        <a (click)="deleteProduct(rowData.productName)"><i class="material-icons">delete_outline</i></a>
+      </td>
+
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+    <tr>
+      <td [attr.colspan]="columns.length + 1">
+        <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+          <div class="ui-g-12 ui-md-3" style="text-align:center">
+            <img [attr.alt]="rowData.imageLocation" src="{{rowData.imageLocation.list}}">
+          </div>
+          <div class="ui-g-12 ui-md-9">
+            <div class="ui-g">
+              <div class="ui-g-12">
+                <b>Name: </b> {{rowData.productName}}
+              </div>
+              <div class="ui-g-12">
+                <b>Type: </b> {{rowData.productType}}
+              </div>
+              <div class="ui-g-12">
+                <b>Brand: </b> {{rowData.productBrand}}
+              </div>
+              <div class="ui-g-12">
+                <b>Color: </b> {{rowData.productColor}}
+              </div>
+              <div class="ui-g-12">
+                <b>Stock: </b> {{rowData.stock}}
+              </div>
+              <div class="ui-g-12">
+                <b>Discount: </b> {{rowData.productDiscount}}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </td>
+      <td style="width: 3em"></td>
+      <td style="width: 3em"></td>
+    </tr>
+  </ng-template>
+</p-table>

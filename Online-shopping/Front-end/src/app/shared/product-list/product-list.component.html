@@ -1,0 +1,161 @@
+<div class="product-list-container ">
+  <div class="product-list-sidebar-container">
+    <div class="product-list-sidebar-title-container">
+      <h2>FILTER</h2>
+    </div>
+    <!-- <hr>
+    <h6>Minimum Price</h6>
+    <p-slider [(ngModel)]="minValue" (onSlideEnd)="priceSelectionChange($event)" [min]="500" [max]="20000" [step]="1000"></p-slider>
+    <hr>
+    <h6>Maximum Price</h6>
+    <p-slider [(ngModel)]="maxValue" (onSlideEnd)="priceSelectionChange($event)" [min]="1000" [max]="30000" [step]="1000"></p-slider>
+    <hr>
+    <input type="text" pKeyFilter="int" value="{{minValue}}" readonly>
+    <input type="text" pKeyFilter="int" value="{{maxValue}}" readonly> -->
+
+    <div class="product-list-sidebar-content-container">
+
+        <p-panel header="PRICE" [toggleable]="true">
+            <h6>Minimum</h6>
+            <p-slider [(ngModel)]="minValue" (onSlideEnd)="priceSelectionChange($event)" [min]="500" [max]="20000" [step]="1000"></p-slider>
+            <h6>Maximum</h6>
+            <p-slider [(ngModel)]="maxValue" (onSlideEnd)="priceSelectionChange($event)" [min]="1000" [max]="30000" [step]="1000"></p-slider>
+            <input type="text" pKeyFilter="int" value="{{minValue}}" readonly>
+            <input type="text" pKeyFilter="int" value="{{maxValue}}" readonly>
+          </p-panel>
+
+      <!-- <ng-template> -->
+      <p-panel header="BRAND NAME" [toggleable]="true">
+        <div *ngFor="let product of totalProductDetails | productSelectionUnique:productType:'uniqueBrand'">
+          <p-checkbox value={{product}} (onChange)="brandFilter($event)" label="{{product}}" [(ngModel)]="selectedProduct"></p-checkbox><br>
+        </div>
+      </p-panel>
+      <!-- </ng-template> -->
+      <ng-container *ngIf="productType=='mobile'">
+        <p-panel header="RAM" [toggleable]="true">
+          <div *ngFor="let product of totalProductDetails |  productSelectionUnique:productType:'uniqueRAM'">
+            <p-checkbox value={{product}} (onChange)="memoryFilter($event)" label="{{product}}" [(ngModel)]="selectedProduct"></p-checkbox><br>
+          </div>
+        </p-panel>
+      </ng-container>
+
+      <ng-container *ngIf="productType=='Watches'">
+        <p-panel header="Color" [toggleable]="true">
+          <div *ngFor="let product of totalProductDetails |  productSelectionUnique:productType:'uniqueColor'">
+            <p-checkbox value={{product}} (onChange)="colorFilter($event)" label="{{product}}" [(ngModel)]="selectedProduct"></p-checkbox><br>
+          </div>
+        </p-panel>
+
+        <!-- <p-panel header="Ideal For" [toggleable]="true" >
+                <div *ngFor="let product of totalProductDetails |  productSelectionUnique:productType:'uniqueColor'">
+                  <p-checkbox value={{product}} (onChange)="colorFilter($event)" label="{{product}}" [(ngModel)]="selectedProduct"></p-checkbox><br>
+                </div>
+              </p-panel> -->
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="product-list-main-container">
+    <p-breadcrumb [model]="breadCrumbItems"></p-breadcrumb>
+
+    <div class="product-list-main-filter-container">
+      <button (click)="getLowToHigh()" class="btn-product-list-filter">Price-Low to High</button>
+      <button (click)="getHighToLow()" class="btn-product-list-filter">Price-High to Low</button>
+    </div>
+
+    <div *ngFor=" let product of totalProductDetails  | productSelection:productType:typeSelection:selectedProduct:pricePipeName:priceSelection">
+
+      <!-- <div  *ngFor=" let product of paginatedProductResponse  | productSelection:productType:typeSelection:selectedProduct:pricePipeName:priceSelection"> -->
+      <ng-container *ngIf="product.productType==='mobile'">
+        <div class="product-list">
+          <div class="product-list-image-container">
+            <a (click)="sendProductNameToDescription(product.productName, product)">
+              <div class="product-list-img-container">
+                <img src="{{product.imageLocation.list}}" />
+              </div>
+            </a>
+            <!-- <div class="product-list-compare-container">
+              <p-checkbox value={{product.productName}} label="Compare"></p-checkbox>
+            </div> -->
+
+          </div>
+          <div class="product-list-content-container">
+            <a (click)="sendProductNameToDescription(product.productName, product)">
+              <div class="product-list-content-title-container">
+                <h6>{{product.productName}}</h6>
+              </div>
+              <div class="product-list-content">
+                <div class="product-list-content-specification">
+                  <h6>Specification</h6>
+                  <ul>
+                    <li>RAM - {{product.specification.RAM}}</li>
+                    <li>Internal memory - {{product.specification.ROM}}</li>
+                    <li>Battery - {{product.specification.batteryCapacity}}</li>
+                    <li>Primary Camera - {{product.specification.primaryCamera}}</li>
+                    <li>Secondary Camera - {{product.specification.secondaryCamera}}</li>
+                    <li>Processor - {{product.specification.processor}}</li>
+                    <li>OS - {{product.specification.os}}</li>
+                  </ul>
+                </div>
+                <div class="product-list-content-price-specification">
+                  <h6>Price Details</h6>
+                  <ul>
+                    <li>Price - {{product.productPrice | currency: 'INR'}}</li>
+                    <li>Discount - {{product.productDiscount}}%</li>
+                    <li>In Stock - {{product.stock}}</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </ng-container>
+
+
+      <ng-container *ngIf="product.productType==='Watches'">
+        <div class="product-list" *ngIf="product.productType==='Watches'">
+          <div class="product-list-image-container">
+            <a (click)="sendProductNameToDescription(product.productName, product)">
+              <div class="product-list-img-container1">
+                <img src="{{product.imageLocation.list}}" />
+              </div>
+            </a>
+            <!-- <div class="product-list-compare-container">
+              <p-checkbox value={{product.productName}} label="Compare"></p-checkbox>
+            </div> -->
+
+          </div>
+          <div class="product-list-content-container">
+            <a (click)="sendProductNameToDescription(product.productName, product)">
+              <div class="product-list-content-title-container">
+                <h6>{{product.productName}}</h6>
+              </div>
+              <div class="product-list-content">
+                <div class="product-list-content-specification">
+                  <h6>Specification</h6>
+                  <ul>
+                    <li>Display type - {{product.specification.displayType}}</li>
+                    <li>Occasion - {{product.specification.occasion}}</li>
+                    <li>Water resistance - {{product.specification.waterResistant}}</li>
+                    <li>Watch type- {{product.specification.watchType}}</li>
+                    <li>Strap - {{product.specification.bodyStrapMaterial}}</li>
+                    <li>Clasp type - {{product.specification.claspType}}</li>
+                  </ul>
+                </div>
+                <div class="product-list-content-price-specification">
+                  <h6>Price Details</h6>
+                  <ul>
+                    <li>Price - {{product.productPrice | currency: 'INR'}}</li>
+                    <li>Discount - {{product.productDiscount}}%</li>
+                    <li>In Stock - {{product.stock}}</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <p-paginator [rows]="3" [totalRecords]="lengthOfTotalProduct" alwaysShow="false" (onPageChange)="paginate($event)"></p-paginator>
+  </div>
+</div>

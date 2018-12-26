@@ -1,0 +1,68 @@
+<div class="signup-container">
+
+    <div class="signup-title-container">
+      <h2> Registration </h2>
+      <i class="far fa-window-close" (click)="goBack()"></i>
+    </div>
+
+    <form [formGroup]="signupForm">
+
+    <div class="signup-content-container">
+      <div class="signup-username-container">
+          <span class="ui-float-label">
+              <input type="text" pInputText class="signup-username" formControlName="username" (blur)="validateUsername()" pTooltip="Username must contains only alphabets" tooltipPosition="right">
+              <label for="float-input">Username</label>
+          </span>
+      </div>
+
+      <div class="signup-password-container">
+          <span class="ui-float-label">
+              <input type="password" (blur)="validatePassword()" pInputText class="signup-password" formControlName="password" pTooltip="Specification - minimum(6), maximum(16) and must contain one Upper case
+              letter, One lower case, One number and may contain special characters" tooltipPosition="right">
+              <label for="float-input">Password</label>
+          </span>
+      </div>
+
+      <div class="signup-confirm-password-container">
+          <span class="ui-float-label">
+              <input type="password" (blur)="validateConfirmPassword()" pInputText class="signup-confirm-password" formControlName="confirmPassword" pTooltip="Confirm password must match with above field" tooltipPosition="right">
+              <label for="float-input">Confirm Password</label>
+          </span>
+      </div>
+
+      <div class="signup-email-container">
+          <span class="ui-float-label">
+              <input type="email" (blur)="validateEmail()" pInputText class="signup-email" formControlName="email" pTooltip="Email format - xxxx@xx.xx (or) xxxx@xxxx.xxx ">
+              <label for="float-input">Email ID</label>
+          </span>
+      </div>
+
+      <div class="signup-phone-container">
+          <span class="ui-float-label">
+              <p-inputMask  formControlName="phone" (onBlur)="validatePhone()" mask="9999999999" slotChar="" pTooltip="Please enter your registered mobile number"></p-inputMask>
+              <label for="float-input">Mobile number</label>
+          </span>
+      </div>
+    </div>
+
+    <div class="signup-button-container">
+        <input type="reset" class="btn signup-reset-button" value="Reset">
+        <input type="submit" class="btn btn-primary signup-submit-button" value="Next"
+        [disabled]="signupForm.controls['username'].invalid || signupForm.controls['password'].invalid ||
+        signupForm.controls['confirmPassword'].invalid || signupForm.controls['email'].invalid ||
+        signupForm.controls['phone'].invalid
+    "  (click)="sendOTP()">
+    </div>
+
+    <div class="signup-otp-container">
+        <span class="ui-float-label">
+            <p-inputMask  mask="9999" slotChar="" (blur)="validateOTP()" formControlName="otp" pTooltip="Please provide your received One time password(OTP)"></p-inputMask>
+            <label for="float-input">Your received OTP</label>
+        </span>
+      </div>
+        <div class="signup-otp-button-container">
+            <input type="submit" class="btn btn-primary signup-otp-submit-button" value="SIGN UP" [disabled]="signupForm.invalid" (click)="getSignup()">
+        </div>
+  </form>
+</div>
+<p-toast></p-toast>

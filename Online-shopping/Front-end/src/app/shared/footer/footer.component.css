@@ -1,0 +1,39 @@
+.footer-container {
+  background: #222;
+  height: auto;
+  padding: 10px;
+  color: white;
+}
+
+#footer-container-header {
+  color: #888888;
+}
+
+.footer {
+  padding-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer ul {
+  padding-left: 0;
+  list-style: none;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.footer-address-list {
+  list-style: none;
+}
+
+.footer-copyright {
+  text-align: center;
+  color: #666;
+}
+.footer-copyright h6{font-size: 12px;}
+
+#footer-line {
+  /* background: lightgrey; */
+  background: #444;
+}

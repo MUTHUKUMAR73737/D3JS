@@ -1,0 +1,123 @@
+.super-admin-home-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.super-admin-side-nav-container {
+  width: 15%;
+  height: auto;
+  border: 1px solid steelblue;
+}
+
+.main-container {
+  width: 85%;
+  height: auto;
+  border: 1px solid black;
+}
+
+:host /deep/ .ui-menu {
+  width: 100%;
+}
+
+:host /deep/ .ui-state-active {
+  background: lightgrey;
+}
+
+p-chart {
+  width: 100%;
+}
+
+.summary-chart-container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-chart-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+.summary-title {
+  width: 100%;
+  color: steelblue;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-save, .btn-delete {
+  width: 40%;
+  margin:5px
+}
+
+.cart-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
+
+.count-order-container, .count-shipping-container, .count-return-container, .count-delivery-container {
+  width: 23%;
+  height: auto;
+  margin: 5px;
+  border: 1px solid lightgray;
+  padding:5px;
+}
+
+.fa-cog {
+  color: #095caf;
+}
+
+.item-count {
+  display: flex;
+  justify-content: space-between;
+}
+
+h5 {
+  text-align: center;
+  color: steelblue;
+}
+
+h6 {
+  color: #095caf;
+  text-align: center;
+  font-weight: 900;
+}
+#summary-count {
+  font-family: 'Faster One', cursive;
+  color: #095caf;
+  font-size: 40px;
+}
+
+.shop-icon {
+  font-size: 35px;
+  color:#095caf;
+  padding-top: 10px;
+}
+
+.fas {
+  padding-top: 10px;
+}
+
+.data-table-caption {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 0;
+  width: 10%;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+}

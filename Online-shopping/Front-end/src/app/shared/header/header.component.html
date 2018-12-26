@@ -1,0 +1,38 @@
+<div class="header-container">
+  <div class="header-first">
+    <div class="header-title-container">
+      <!-- <img src="../../../assets/images/logo.jpg"> -->
+      <h4 routerLink="/home">ONLINE SHOPPING</h4>
+    </div>
+
+    <div class="header-search-bar-container">
+      <e-shopping-header-searchbar></e-shopping-header-searchbar>
+    </div>
+  </div>
+
+  <div class="header-button-container">
+    <div class="header-cart" *ngIf="isAuthenticatedUser">
+      <button pButton type="button" routerLink="/users/cart" icon="pi pi-shopping-cart" label="Cart" class="ui-button-secondary header-button" iconPos="right"></button>
+    </div>
+
+    <div class="header-cart" *ngIf="isAuthenticatedAdmin">
+        <button pButton type="button" routerLink="/admin" icon="pi pi-shopping-cart" label="Admin" class="ui-button-secondary header-button" iconPos="right"></button>
+    </div>
+
+    <div class="header-cart" *ngIf="isAuthenticatedSuperAdmin">
+        <button pButton type="button" routerLink="/superadmin" icon="pi pi-shopping-cart" label="Admin" class="ui-button-secondary header-button" iconPos="right"></button>
+    </div>
+
+    <div class="header-signin" *ngIf="!isAuthenticated">
+        <button pButton type="button" (click)="openDialogLogin()" icon="pi pi-sign-in" label="Sign In" class="ui-button-secondary header-button" iconPos="right"></button>
+    </div>
+
+    <div class="header-signin" *ngIf="isAuthenticated">
+        <button pButton type="button" (click)="getLogout()" icon="pi pi-sign-out" label="Sign Out " class="ui-button-secondary header-button" iconPos="right"></button>
+    </div>
+    <div *ngIf="isAuthenticated">
+        <button pButton type="button" label="{{username}}" class="ui-button-secondary header-button account-btn" ><i class="material-icons" style="font-size: 30px">account_circle</i></button>
+    </div>
+  </div>
+</div>
+

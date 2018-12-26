@@ -1,0 +1,346 @@
+<div class="product-description-container" *ngIf="product">
+      <div class="product-description-image-container">
+        <div class="product-description-img">
+          <img src="{{currentImage}}">
+        </div>
+        <div class="item-container" *ngIf="product[0]['imageLocation']">
+            <div class="item" (click)="sendImage(product[0]['imageLocation'].normal)">
+              <img src="{{product[0]['imageLocation'].normal}}" >
+            </div>
+            <div class="item" (click)="sendImage(product[0]['imageLocation'].left)">
+                <img src="{{product[0]['imageLocation'].left}}" >
+            </div>
+            <div class="item" (click)="sendImage(product[0]['imageLocation'].right)">
+                <img src="{{product[0]['imageLocation'].right}}" >
+            </div>
+            <div class="item" (click)="sendImage(product[0]['imageLocation'].other)">
+                <img src="{{product[0]['imageLocation'].other}}" >
+            </div>
+          </div>
+
+        <div class="product-description-button-container">
+          <button class="description-btn" [disabled]="!isAuthenticatedUser"  (click)="addOrderItem(product[0].productName)">Buy now</button>
+          <button class="description-btn desc-button" [disabled]="!isAuthenticatedUser"  (click)="addToCart(product[0].productName)">Add to cart</button>
+        </div>
+      </div>
+
+      <div class="product-description-content-container">
+          <p-breadcrumb [model]="breadCrumbItems" [home]="home"></p-breadcrumb>
+          <div class="description-main-container" >
+          <p-tabView>
+              <p-tabPanel header="Basic Information">
+                <div class="description-content">
+                    <h6>General Information</h6>
+                    <table class="table-striped spec-general">
+                      <tbody>
+                        <tr>
+                            <td>Price</td>
+                            <td>{{product[0].productPrice | currency: 'INR'}}</td>
+                        </tr>
+                        <tr>
+                            <td>ProductName</td>
+                            <td>{{product[0].productName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Product Type </td>
+                            <td>{{product[0].productType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Product Stock </td>
+                            <td>{{product[0].stock}}</td>
+                        </tr>
+                        <tr>
+                            <td>Product Color </td>
+                            <td>{{product[0].productColor}}</td>
+                        </tr>
+                        <tr>
+                          <td>Product Discount</td>
+                          <td>{{product[0].productDiscount}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                </div>
+
+              </p-tabPanel>
+              <p-tabPanel header="Specification">
+                <ng-container *ngIf="product[0].productType==='mobile'">
+                  <div class="description-content">
+                    <h6 id="specification-title">General Features : </h6>
+                    <table class="table-striped spec-total">
+                      <tbody>
+                        <tr>
+                            <td>Model Number</td>
+                            <td>{{product[0]['specification'].modelNo}}</td>
+                        </tr>
+                        <tr>
+                            <td>Model Name</td>
+                            <td>{{product[0]['specification'].modelName}}</td>
+                        </tr>
+                        <tr>
+                            <td>SIM type </td>
+                            <td>{{product[0]['specification'].SIMType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Touchscreen </td>
+                            <td>{{product[0]['specification'].touchscreen}}</td>
+                        </tr>
+                        <tr>
+                            <td>Hybrid SIM slot </td>
+                            <td>{{product[0]['specification'].hybridSIMSlot}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="line"></div>
+                    <h6>Display Features</h6>
+                    <table class="table-striped spec-total">
+                      <tbody>
+                        <tr>
+                            <td>Size</td>
+                            <td>{{product[0]['specification'].displaySize}}</td>
+                        </tr>
+                        <tr>
+                            <td>Resolution</td>
+                            <td>{{product[0]['specification'].displayResolution}}</td>
+                        </tr>
+                        <tr>
+                            <td>Resolution Features </td>
+                            <td>{{product[0]['specification'].displayResolutionType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Type </td>
+                            <td>{{product[0]['specification'].displayType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Others</td>
+                            <td>{{product[0]['specification'].displayOther}}</td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                    <div class="line"></div>
+                    <h6>System & Memory Features</h6>
+                    <table class="table-striped spec-total">
+                    <tbody>
+                      <tr>
+                          <td>Operation System</td>
+                          <td>{{product[0]['specification'].os}}</td>
+                      </tr>
+                      <tr>
+                          <td>Processor</td>
+                          <td>{{product[0]['specification'].processor}}</td>
+                      </tr>
+                      <tr>
+                          <td>Processor Core </td>
+                          <td>{{product[0]['specification'].processorCore}}</td>
+                      </tr>
+                      <tr>
+                          <td>Read Only Memory(ROM) </td>
+                          <td>{{product[0]['specification'].ROM}}</td>
+                      </tr>
+                      <tr>
+                          <td>Random Access Memory(RAM)</td>
+                          <td>{{product[0]['specification'].RAM}}</td>
+                      </tr>
+                      <tr>
+                        <td>Battery Capacity</td>
+                        <td>{{product[0]['specification'].batteryCapacity}}</td>
+                      </tr>
+                      <tr>
+                        <td>ExpandableStorage</td>
+                        <td>{{product[0]['specification'].expandableStorage}}</td>
+                    </tr>
+                    <tr>
+                      <td>Supported memory card </td>
+                      <td>{{product[0]['specification'].supportedCard}}</td>
+                    </tr>
+                    <tr>
+                      <td>Memory Card slot type</td>
+                      <td>{{product[0]['specification'].memoryCardSlotType}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <div class="line"></div>
+                  <h6>Camera and Other Features</h6>
+                  <table class="table-striped spec-total">
+                    <tbody>
+                      <tr>
+                          <td>Primary camera</td>
+                          <td>{{product[0]['specification'].primaryCamera}}</td>
+                      </tr>
+                      <tr>
+                          <td>Secondary camera </td>
+                          <td>{{product[0]['specification'].secondaryCamera}}</td>
+                      </tr>
+                      <tr>
+                          <td>Secondary camera Features </td>
+                          <td>{{product[0]['specification'].secondaryCameraFeatures}}</td>
+                      </tr>
+                      <tr>
+                          <td>Smartphone </td>
+                          <td>{{product[0]['specification'].smartPhone}}</td>
+                      </tr>
+                      <tr>
+                          <td>SIM size</td>
+                          <td>{{product[0]['specification'].SIMSize}}</td>
+                      </tr>
+                      <tr>
+                        <td>Removable battery</td>
+                        <td>{{product[0]['specification'].removableBattery}}</td>
+                      </tr>
+                      <tr>
+                        <td>Graphics PPI</td>
+                        <td>{{product[0]['specification'].graphicsPPI}}</td>
+                    </tr>
+                    <tr>
+                      <td>Sensors </td>
+                      <td>{{product[0]['specification'].sensors}}</td>
+                    </tr>
+                    <tr>
+                      <td>Others</td>
+                      <td>{{product[0]['specification'].others}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  </div>
+
+                </ng-container>
+
+                <ng-container *ngIf="product[0].productType==='Watches'">
+                    <div class="description-content">
+                      <h6 id="specification-title">General Features : </h6>
+                      <table class="table-striped spec-total">
+                        <tbody>
+                          <tr>
+                              <td>Water Resistant</td>
+                              <td>{{product[0]['specification'].waterResistant}}</td>
+                          </tr>
+                          <tr>
+                              <td>Style code</td>
+                              <td>{{product[0]['specification'].styleCode}}</td>
+                          </tr>
+                          <tr>
+                              <td>Series </td>
+                              <td>{{product[0]['specification'].series}}</td>
+                          </tr>
+                          <tr>
+                              <td>Occasion </td>
+                              <td>{{product[0]['specification'].occasion}}</td>
+                          </tr>
+                          <tr>
+                              <td>Watch type </td>
+                              <td>{{product[0]['specification'].watchType}}</td>
+                          </tr>
+                          <tr>
+                              <td>In box </td>
+                              <td>{{product[0]['specification'].box}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                <div class="line"></div>
+
+                      <h6>Display Features</h6>
+                      <table class="table-striped spec-total">
+                        <tbody>
+                          <tr>
+                              <td>Type</td>
+                              <td>{{product[0]['specification'].displayType}}</td>
+                          </tr>
+                          <tr>
+                              <td>Calendar</td>
+                              <td>{{product[0]['specification'].calendar}}</td>
+                          </tr>
+                          <tr>
+                              <td>Date Display </td>
+                              <td>{{product[0]['specification'].displayDate}}</td>
+                          </tr>
+                          <tr>
+                              <td>Alarm Clock </td>
+                              <td>{{product[0]['specification'].alarmClock}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                <div class="line"></div>
+
+                      <h6>Body Features</h6>
+                      <table class="table-striped spec-total">
+                      <tbody>
+                        <tr>
+                            <td>Strap material</td>
+                            <td>{{product[0]['specification'].bodyStrapMaterial}}</td>
+                        </tr>
+                        <tr>
+                            <td>Strap Type</td>
+                            <td>{{product[0]['specification'].bodyStrapType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Clasp Type </td>
+                            <td>{{product[0]['specification'].claspType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Water resistance depth</td>
+                            <td>{{product[0]['specification'].waterResistanceDepth}}</td>
+                        </tr>
+                        <tr>
+                            <td>Others</td>
+                            <td>{{product[0]['specification'].bodyOther}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                <div class="line"></div>
+
+                    <h6>Dimensions</h6>
+                    <table class="table-striped spec-total">
+                      <tbody>
+                        <tr>
+                            <td>Width</td>
+                            <td>{{product[0]['specification'].dimensionsWidth}}</td>
+                        </tr>
+                        <tr>
+                            <td>Thickness </td>
+                            <td>{{product[0]['specification'].dimensionsThickness}}</td>
+                        </tr>
+                        <tr>
+                            <td>Diameter </td>
+                            <td>{{product[0]['specification'].dimensionsDiameter}}</td>
+                        </tr>
+                        <tr>
+                            <td>Weight </td>
+                            <td>{{product[0]['specification'].weight}}</td>
+                        </tr>
+                        <tr>
+                            <td>Other</td>
+                            <td>{{product[0]['specification'].dimensionsOthers}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </div>
+
+                  </ng-container>
+              </p-tabPanel>
+              <p-tabPanel header="Offers">
+                  <h6 id="specification-title">Offers  </h6>
+                 <table class=" table-striped offer-table" >
+                   <tr>
+                     <th>Offer Type</th>
+                     <th>Offer(in Percentage)</th>
+                   </tr>
+                  <tr>
+                    <td>Debit card</td>
+                    <td>{{product[0]['offer'].debitCard}}</td>
+                </tr>
+
+                <tr>
+                  <td>Normal discount</td>
+                  <td>{{product[0].productDiscount}}</td>
+              </tr>
+                 </table>
+              </p-tabPanel>
+              <p-tabPanel header="Description">
+                  <P>{{product[0].description}}</P>
+              </p-tabPanel>
+          </p-tabView>
+          </div>
+      </div>
+</div>
+
+<p-toast></p-toast>
