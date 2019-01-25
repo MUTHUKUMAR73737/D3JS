@@ -23,6 +23,9 @@ export class SvgVerticalBarChartSampleComponent implements OnInit {
   // Document data array
   documentData = [];
 
+  line: any;
+  linePlot: any;
+
   constructor() {}
 
   ngOnInit() {}
@@ -34,6 +37,9 @@ export class SvgVerticalBarChartSampleComponent implements OnInit {
     for (const data of this.documentData) {
       this.salary.push(data.salary);
     }
+
+    console.log(this.documentData);
+    console.log(this.salary);
 
     // SVG element creation
     this.svg = d3
@@ -49,8 +55,7 @@ export class SvgVerticalBarChartSampleComponent implements OnInit {
       .select('.vertical-chart-container')
       .append('div')
       .attr('class', 'tooltip')
-      .style('opacity', 0)
-      .style('display', 'none');
+      .style('opacity', 0);
 
     // set up user co-ordinate system for SVG
     this.svg = d3
@@ -78,6 +83,15 @@ export class SvgVerticalBarChartSampleComponent implements OnInit {
       .scaleLinear()
       .domain([0, d3.max(this.salary)])
       .range([500, 0]);
+
+    this.line = d3
+      .line()
+      .x(data => this.xScale(data['username']) + 10)
+      .y(data => this.yScale(data['salary']));
+    this.linePlot = this.line(this.documentData);
+
+    console.log(this.linePlot);
+
     // Main Graph element creation
     this.g = this.svg
       .append('g')
@@ -95,6 +109,15 @@ export class SvgVerticalBarChartSampleComponent implements OnInit {
       .append('g')
       .attr('transform', 'translate(49, 50 )')
       .call(d3.axisLeft(this.yScale));
+
+    this.g
+      .append('path')
+      .attr('transform', 'translate(50, 50)')
+      .datum(this.documentData)
+      .attr('fill', 'none')
+      .attr('stroke', 'yellowgreen')
+      .attr('stroke-width', 1.5)
+      .attr('d', this.linePlot);
     // rectangle bar creation
     this.g
       .append('g')
@@ -126,25 +149,33 @@ export class SvgVerticalBarChartSampleComponent implements OnInit {
   }
   //  onMouseOver event
   fillOrangeColor(data, index) {
-    this.toolTip.style('opacity', 1).classed('tooltip', true);
+    this.toolTip.style('opacity', 1).classed('tooltip1', true);
+    console.log(d3.event);
     this.toolTip
-      .html(`Salary: <span>${data.salary}</span>`)
-      .style('left', `${d3.event.layerX - 10}px`)
-      .style('top', `${d3.event.layerY + 10}px`)
+      .html(
+        `
+      <div class='header'><h4>SALARY</h4></div>
+  <div class='tip'><h6>Year - 2018</h6><h5>${data.salary}</h5></div>
+  <div class='tip'><h6>Year - 2017</h6><h5>8500</h5></div>
+  <div class='tip'><h6>Year - 2016</h6><h5>6000</h5></div>
+      `
+      )
+      .style('left', `${d3.event.offsetX + 5}px`)
+      .style('top', `${d3.event.offsetY + 50}px`)
       .style('display', 'inline');
   }
 
   // onMouseOut event
   fillBlueColor(data, index) {
     d3.selectAll('.vertical-bar')
-    .filter(function(this, d, i) {
-      if (index === i) {
-        return true;
-      } else {
-        return false;
-      }
-    })
-    .style('fill', 'steelblue');
+      .filter(function(this, d, i) {
+        if (index === i) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .style('fill', 'steelblue');
     d3.select('.tooltip').style('display', 'none');
   }
 }

@@ -1,0 +1,126 @@
+.vertical-bar {
+  fill: steelblue;
+}
+
+.container {
+  display: flex;
+}
+
+svg {
+  padding: 10px;
+}
+
+button {
+  box-shadow: none !important;
+  margin: 5px;
+}
+
+
+/*
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+
+.tooltip {
+  font-weight: bold;
+  padding: 12px;
+  background: white;
+  border: 1px solid rebeccapurple;
+  border-radius: 2px;
+  height: 200px;
+  width: 20%;
+  padding: 0 !important;
+}
+
+.tip {
+  padding: 0 !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+h4 {
+  margin: 0px 7px 7px 7px !important;
+}
+
+h6,
+h5 {
+  margin: 15px 10px 15px 5px !important;
+}
+
+h4 {
+  /*   color: lightgray; */
+  /* font-weight: 400 !important;
+}
+
+.header {
+  text-align: center !important;
+  background: lightgray;
+  color: black;
+} */
+
+ /* .tooltip1 {
+  font-weight: bold;
+  padding: 12px;
+  background: white;
+  border: 1px solid rebeccapurple;
+  border-radius: 1px;
+  height: 200px;
+  width: 20%;
+  padding: 0px;
+}
+
+
+
+ .tooltip1::after {
+    content: "";
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent rebeccapurple;
+    position: absolute;
+    right:-20px;
+    top:40%;
+}
+
+
+ .tip {
+  padding: 0 !important;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 5px;
+}
+
+h4 {
+  margin: 0px 7px 7px 7px !important;
+
+}
+
+ h6 {
+  margin: 15px 10px 15px 5px !important;
+  font-weight: 400 !important;
+  /* font-family: 'Nanum Myeongjo', serif; */
+  /* font-family: 'Gentium Basic', serif;
+}
+ h5 {
+  margin: 15px 10px 15px 5px !important;
+  font-family: 'Headland One', serif;
+}
+
+ .header {
+  text-align: center !important;
+  /* background: lightgray;
+  color: black; */
+  /* padding:5px 5px;
+  background: #435CC8;
+  color: white;
+  font-family: 'Spectral SC', serif;
+}  */
+
+

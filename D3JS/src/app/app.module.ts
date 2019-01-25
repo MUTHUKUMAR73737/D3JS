@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -13,6 +14,9 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { StackedBarSampleComponent } from './stacked-bar-sample/stacked-bar-sample.component';
 import { HorizontalStackedBarComponent } from './horizontal-stacked-bar/horizontal-stacked-bar.component';
 import { GroupedBarChartComponent } from './grouped-bar-chart/grouped-bar-chart.component';
+import { CenterHorizontalStackedBarComponent } from './center-horizontal-stacked-bar/center-horizontal-stacked-bar.component';
+import { StackGroupBarChartComponent } from './stack-group-bar-chart/stack-group-bar-chart.component';
+import { GroupedStackChartComponent } from './grouped-stack-chart/grouped-stack-chart.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,10 @@ import { GroupedBarChartComponent } from './grouped-bar-chart/grouped-bar-chart.
     PieChartComponent,
     StackedBarSampleComponent,
     HorizontalStackedBarComponent,
-    GroupedBarChartComponent
+    GroupedBarChartComponent,
+    CenterHorizontalStackedBarComponent,
+    StackGroupBarChartComponent,
+    GroupedStackChartComponent
   ],
   imports: [
     BrowserModule,

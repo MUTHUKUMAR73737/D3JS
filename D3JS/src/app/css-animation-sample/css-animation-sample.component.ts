@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import * as d3 from 'd3';
+
 @Component({
   selector: 'app-css-animation-sample',
   templateUrl: './css-animation-sample.component.html',
@@ -8,5 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class CssAnimationSampleComponent implements OnInit {
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // d3.select('body').DOM.text('HELLO WORLD');
+  }
 }

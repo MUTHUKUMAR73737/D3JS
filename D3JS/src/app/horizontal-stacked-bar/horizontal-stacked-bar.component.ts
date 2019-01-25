@@ -27,17 +27,17 @@ export class HorizontalStackedBarComponent implements OnInit {
   async getHorizontalStackedBarChart() {
     this.employeeData = await d3.csv('../../assets/employee-status.csv');
 
-    console.log(this.employeeData);
+    //  Stack shape
     this.stack = d3
       .stack()
-      .keys(['2018', '2017', '2016', '2015'])
-      .order(d3.stackOrderNone)
-      .offset(d3.stackOffsetNone);
+      .keys(['2018', '2017', '2016', '2015']);
 
+    // Shape output
     this.stackSeries = this.stack(this.employeeData);
 
-    // console.log(this.stackSeries);
+    console.log(this.stackSeries);
 
+    // SVG element
     this.svg = d3
       .select('.horizontal-stacked-bar-chart')
       .append('svg')
@@ -46,12 +46,12 @@ export class HorizontalStackedBarComponent implements OnInit {
       .attr('width', 800)
       .attr('height', 600)
       .style('border', '1px solid steelblue');
-
+// User view port
     this.svg = d3
       .select('.horizontal-stack-bar-svg')
       .attr('viewBox', '0 0 800 600');
 
-    // Tooltip element definition
+    // Tooltip element
     this.toolTip = d3
       .select('.horizontal-stacked-bar-chart')
       .append('div')
@@ -59,12 +59,14 @@ export class HorizontalStackedBarComponent implements OnInit {
       .style('opacity', 0)
       .style('display', 'none');
 
+      // y-scale
     this.yScale = d3
       .scaleBand()
       .range([0, 500])
       .domain(this.employeeData.map(data => data.username))
       .padding(0.5);
 
+      // x-scale
     this.xScale = d3
       .scaleLinear()
       .domain([
@@ -74,13 +76,14 @@ export class HorizontalStackedBarComponent implements OnInit {
       .nice()
       .range([0, 600]);
 
-    // Main Graph element creation
+    // Main Graph
     this.graph = this.svg
       .append('g')
       .attr('width', '800')
       .attr('height', '800')
       .attr('transform', 'translate(0, 0)');
 
+      // legend
     this.legendary = d3
       .select('.horizontal-stack-bar-svg')
       .append('g')
@@ -89,8 +92,8 @@ export class HorizontalStackedBarComponent implements OnInit {
       .attr('height', '300px')
       .attr('transform', 'translate(650 70)');
 
-    // d3.scaleOrdinal().
 
+// legend bars and text
     d3.selectAll('.horizontal-stack-main-graph')
       .selectAll('.horizontal-stack-bar-legend')
       .data(['2018-Salary', '2017-Salary', '2016-Salary', '2015-Salary'])
@@ -118,18 +121,19 @@ export class HorizontalStackedBarComponent implements OnInit {
         return this.color(`${i}`);
       });
 
-    // insert x-axis into the graph scale
+    //  x-axis scale
     this.graph
       .append('g')
       .attr('transform', 'translate(50,50)')
       .call(d3.axisTop(this.xScale));
 
-    // insert y-axis into the graph scale
+    // y-axis scale
     this.graph
       .append('g')
       .attr('transform', 'translate(49, 50 )')
       .call(d3.axisLeft(this.yScale));
 
+      // stack layer
     this.layer = this.graph
       .selectAll('.horizontal-layer')
       .data(this.stackSeries)
@@ -138,21 +142,19 @@ export class HorizontalStackedBarComponent implements OnInit {
       .attr('transform', 'translate(50, 50 )')
       .attr('class', 'horizontal-layer')
       .style('fill', (d, i) => {
-        console.log('main - ', d);
         return this.color(i);
       });
 
+      // stack bar
     this.layer
       .selectAll('.horizontal-stack-bar')
       .data(function(d, i) {
-        console.log('ZZZZZZZZZZ' + d);
         return d;
       })
       .enter()
       .append('rect')
       .attr('class', 'horizontal-stack-bar')
       .attr('x', (d, i) => {
-        console.log('XXXXXXXXX' + d);
         return this.xScale(d[0]);
       })
       .attr('y', (d, i) => {
@@ -170,6 +172,7 @@ export class HorizontalStackedBarComponent implements OnInit {
       });
   }
 
+  // tooltip
   getToolTip(data, index) {
     this.toolTip.style('opacity', 1).classed('tooltip', true);
     d3.selectAll('.horizontal-stack-bar').filter((data1, index1) => {
@@ -177,10 +180,6 @@ export class HorizontalStackedBarComponent implements OnInit {
         this.toolTip
           .html(
             `<div>Salary: ${data[1] - data[0]}</div>
-        <!--  <div>2018-salary: ${this.employeeData[index][2018]}</div>
-              <div>2017-salary: ${this.employeeData[index][2017]}</div>
-            <div>2016-salary: ${this.employeeData[index][2016]}</div>
-            <div>2015-salary: ${this.employeeData[index][2015]}</div>--!>
             `
           )
           .style('left', `${d3.event.layerX - 10}px`)

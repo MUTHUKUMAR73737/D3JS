@@ -18,18 +18,12 @@ export class PieChartComponent implements OnInit {
   width: number = 400;
   // tslint:disable-next-line:no-inferrable-types
   height: number = 400;
-
   color = d3.scaleOrdinal(d3.schemeSet2);
-
   radius = Math.min(this.height, this.width) / 2;
-
   graph: any;
   toolTip: any;
-
   employeeName = [];
-
   legendary: any;
-
   dist: any;
   x: any;
   y: any;

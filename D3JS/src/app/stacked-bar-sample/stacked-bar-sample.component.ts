@@ -39,7 +39,7 @@ export class StackedBarSampleComponent implements OnInit {
     // to apply our loaded data into the stack shape
     this.stackSeries = this.stack(this.employeeData);
 
-    // console.log(this.stackSeries);
+    console.log(this.stackSeries);
 
     // Create SVG
     this.svg = d3

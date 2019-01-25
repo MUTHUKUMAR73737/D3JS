@@ -88,15 +88,15 @@ export class D3SampleComponent implements OnInit {
     // To change attribute value dynamically
     d3.select('.container2')
       .selectAll('p')
-      .style('color', function(data, index) {
+      .style('color', function(data, index, nodes) {
         console.log(data);
-        return 'red';
-        // this.text = this.innerText;
-        // if (this.text.indexOf('Error') >= 0) {
-        //   return 'red';
-        // } else if (this.text.indexOf('Warning') >= 0) {
-        //   return 'yellowgreen';
-        // }
+        // return 'red';
+        nodes[index]['text'] = nodes[index]['innerHTML'];
+        if (nodes[index]['text'].indexOf('Error') >= 0) {
+          return 'red';
+        } else if (nodes[index]['text'].indexOf('Warning') >= 0) {
+          return 'yellowgreen';
+        }
       });
   }
 
@@ -155,21 +155,5 @@ export class D3SampleComponent implements OnInit {
       .text(function(data) {
         return data + ' ';
       });
-
-    // d3.csv('../../assets/employee.csv', (data, index) => {
-
-    // const employeeModel = new EmployeeModel();
-    //   employeeModel.employeeData(data.username, data.id, data.domain, data.salary);
-    //   this.employeeArray.push(employeeModel);
-
-    // });
-    // console.log(this.employeeArray);
-    // for (let t = 0; t < this.employeeArray.length; t++) {
-    //   console.log('Data = ' + `${t}` + this.employeeArray[t]._username);
-    // }
-
-    // d3.json('../../assets/data.json', function(data) {
-    //   console.log('Data -> ' , data);
-    // });
   }
 }

@@ -1,0 +1,92 @@
+[{
+  "username": "AAAA",
+  "salary": [{
+    "value": 5000,
+    "year": 2018
+  }, {
+    "value": 4000,
+    "year": 2017
+  }, {
+    "value": 1500,
+    "year": 2016
+  }, {
+    "value": 2500,
+    "year": 2015
+  }]
+}, {
+  "username": "BBBB",
+  "salary": [{
+      "value": 4000,
+      "year": 2018
+    },
+    {
+      "value": 2000,
+      "year": 2017
+    },
+    {
+      "value": 1000,
+      "year": 2016
+    },
+    {
+      "value": 0,
+      "year": 2015
+    }
+  ]
+}, {
+  "username": "CCCC",
+  "salary": [{
+      "value": 1000,
+      "year": 2018
+    },
+    {
+      "value": 1000,
+      "year": 2017
+    },
+    {
+      "value": 1500,
+      "year": 2016
+    },
+    {
+      "value": 2500,
+      "year": 2015
+    }
+  ]
+}, {
+  "username": "DDDD",
+  "salary": [{
+      "value": 6000,
+      "year": 2018
+    },
+    {
+      "value": 5000,
+      "year": 2017
+    },
+    {
+      "value": 4500,
+      "year": 2016
+    },
+    {
+      "value": 3500,
+      "year": 2015
+    }
+  ]
+}, {
+  "username": "EEEE",
+  "salary": [{
+      "value": 6000,
+      "year": 2018
+    },
+    {
+      "value": 5000,
+      "year": 2017
+    },
+    {
+      "value": 4500,
+      "year": 2016
+    },
+    {
+      "value": 3500,
+      "year": 2015
+    }
+  ]
+}]
