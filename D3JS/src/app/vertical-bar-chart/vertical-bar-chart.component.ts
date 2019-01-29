@@ -24,12 +24,9 @@ export class VerticalBarChartComponent implements OnInit {
   g: any;
   // Tooltip element
   toolTip: any;
-// sorting
-sortOrder: any = null;
-  // Document data array
-  // documentData = [];
+  // sorting
+  sortOrder: any = null;
 
-  // employeeData = [];
 
   employeeModel: EmployeeModel[] = [];
   line: any;
@@ -47,8 +44,6 @@ sortOrder: any = null;
         this.employeeModel.push(employeeModel);
       }
     });
-
-    // console.log(this.employeeData);
   }
 
    getAllUser() {
@@ -147,11 +142,9 @@ sortOrder: any = null;
                 return this.xScale(data['_username']) + 10;
               })
               .y(data => this.yScale(data['_salary']));
-              // .x(data => this.xScale(data['username']) + 10)
-              // .y(data => this.yScale(data['salary']));
+
             this.linePlot = this.line(this.employeeModel);
 
-            // console.log(this.linePlot);
 
             // Main Graph element creation
             this.g = this.svg
@@ -171,16 +164,6 @@ sortOrder: any = null;
               .attr('transform', 'translate(49, 50 )')
               .call(d3.axisLeft(this.yScale));
 
-              // HTML in axis
-              // .selectAll('g')
-              // .append('svg:foreignObject')
-              //     .attr('width',tw)
-              //     .attr('height',th)
-              //     .attr('x', tx)
-              //     .attr('y', ty)
-              // .append('xhtml:div')
-              //     .html('');
-
             this.pathAnimation = this.g
               .append('path')
               .attr('transform', 'translate(50, 50)')
@@ -190,7 +173,6 @@ sortOrder: any = null;
               .attr('stroke-width', 1.5)
               .attr('d', this.linePlot);
 
-            // console.log(this.pathAnimation.node().getTotalLength());
             this.pathLength = this.pathAnimation.node().getTotalLength();
 
             // line plot animation
