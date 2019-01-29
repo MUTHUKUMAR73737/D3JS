@@ -8,7 +8,6 @@ import * as d3 from 'd3';
   styleUrls: ['./pie-chart.component.css']
 })
 export class PieChartComponent implements OnInit {
-  pieChartData = new Array();
   pie: any;
   arc: any;
   arcs: any;
@@ -22,11 +21,12 @@ export class PieChartComponent implements OnInit {
   radius = Math.min(this.height, this.width) / 2;
   graph: any;
   toolTip: any;
-  employeeName = [];
   legendary: any;
   dist: any;
   x: any;
   y: any;
+  animatedArc: any;
+
   constructor() {}
 
   ngOnInit() {
@@ -36,13 +36,8 @@ export class PieChartComponent implements OnInit {
   }
 
   getPieChart() {
-    for (const employee of this.employeeData) {
-      this.pieChartData.push(employee.salary);
-    }
 
-    for (const employee of this.employeeData) {
-      this.employeeName.push(employee.username);
-    }
+    d3.select('.pie-chart-container').html(' ');
 
     this.svg = d3
       .select('.pie-chart-container')
@@ -62,7 +57,7 @@ export class PieChartComponent implements OnInit {
 
     d3.selectAll('.pie-legend-main-graph')
       .selectAll('.pie-chart-legend')
-      .data(this.employeeName)
+      .data(this.employeeData.map(data => data.username))
       .enter()
       .append('g')
       .attr('transform', function(d, i) {
@@ -71,7 +66,7 @@ export class PieChartComponent implements OnInit {
       .attr('class', 'pie-chart-legend')
       .append('text')
       .text(function(d) {
-        return d;
+        return d.toString();
       })
       .attr('x', '0px')
       .attr('y', function(d, i) {
@@ -80,9 +75,11 @@ export class PieChartComponent implements OnInit {
 
     d3.selectAll('.pie-chart-legend')
       .append('rect')
-      .attr('x', '90px')
+      .attr('x', '80px')
       .attr('width', `15px`)
       .attr('height', '15px')
+      .attr('rx', '7.5px')
+      .attr('ry', '7.5px')
       .style('border', '1px solid lightgray')
       .attr('fill', (d, i) => {
         return this.color(`${i}`);
@@ -100,16 +97,20 @@ export class PieChartComponent implements OnInit {
       .attr('class', 'pie-chart-graph')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
 
-    this.pie = d3.pie();
+    this.pie = d3.pie().padAngle(0.01);
 
     this.arc = d3
       .arc()
-      .innerRadius(this.radius - 50)
-      .outerRadius(this.radius);
+      .innerRadius(this.radius - 100)
+      .outerRadius(this.radius - 50);
+      this.animatedArc = d3
+      .arc()
+      .innerRadius(this.radius - 80)
+      .outerRadius(this.radius - 30 );
 
     this.arcs = this.graph
       .selectAll('.arc-container')
-      .data(this.pie(this.pieChartData))
+      .data(this.pie(this.employeeData.map(data => data.salary)))
       .enter()
       .append('g')
       .attr('class', 'arc-container');
@@ -120,8 +121,8 @@ export class PieChartComponent implements OnInit {
         return this.color(index);
       })
       .attr('d', this.arc)
-      .on('mouseover', (data1, index1) => {
-        // console.log(data1);
+      .on('mouseover', (data1, index1, nodes) => {
+        d3.select(nodes[index1]).transition().duration(2000).attr('d', this.animatedArc);
         this.toolTip.style('opacity', 1).classed('tooltip', true);
         d3.selectAll('.arc-container').filter((d, i) => {
           if (index1 === i) {
@@ -134,11 +135,10 @@ export class PieChartComponent implements OnInit {
           } else {
             return null;
           }
-        })
-        .transition().duration(500).attr('transform', 'translate(50, 0)');
-
+        });
       })
-      .on('mouseout', (data, index) => {
+      .on('mouseout', (data, index, nodes) => {
+        d3.select(nodes[index]).transition().delay(500).duration(1000).attr('d', this.arc);
         d3.select('.tooltip').style('display', 'none');
         d3.selectAll('.arc-container')
           .transition()

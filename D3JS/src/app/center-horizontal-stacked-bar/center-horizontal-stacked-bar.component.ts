@@ -27,12 +27,14 @@ export class CenterHorizontalStackedBarComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    d3.csv('../../assets/employee-status.csv').then(data => {
+    d3.csv('../../assets/employee3.csv').then(data => {
       this.employeeData = data;
     });
   }
 
   getCenterAlignedHorizontalStackedChart() {
+    d3.select('.center-horizontal-stacked-bar-container').html('');
+
     // Main SVG element
     this.svg = d3
       .select('.center-horizontal-stacked-bar-container')
@@ -59,8 +61,6 @@ export class CenterHorizontalStackedBarComponent implements OnInit {
 
     // Output of stack shape
     this.stackSeries = this.stack(this.employeeData);
-
-    // console.log(this.stackSeries);
 
     // Midpoint calculation for each rectangle bar(eg-username)
     this.midPoint = this.stackSeries[this.stackSeries.length - 1].map(
@@ -103,7 +103,6 @@ export class CenterHorizontalStackedBarComponent implements OnInit {
       .attr('y2', 550)
       .attr('stroke', 'black');
 
-
     // Y-scale
     this.graph
       .append('g')
@@ -111,14 +110,13 @@ export class CenterHorizontalStackedBarComponent implements OnInit {
       .attr('transform', 'translate(50, 50)')
       .call(d3.axisLeft(this.yScale));
 
-      // Legend
-      this.legend = this.svg
+    // Legend
+    this.legend = this.svg
       .append('g')
       .attr('class', 'horizontal-stack-main-graph')
       .attr('width', '200px')
       .attr('height', '200px')
       .attr('transform', 'translate(580 70)');
-
 
     d3.selectAll('.horizontal-stack-main-graph')
       .selectAll('.horizontal-stack-bar-legend')
@@ -132,7 +130,8 @@ export class CenterHorizontalStackedBarComponent implements OnInit {
       .append('text')
       .text(function(d) {
         return d;
-      }).style('font-size', '12px')
+      })
+      .style('font-size', '12px')
       .attr('x', '0px')
       .attr('y', function(d, i) {
         return 12;

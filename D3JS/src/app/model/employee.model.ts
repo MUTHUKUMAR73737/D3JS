@@ -1,9 +1,8 @@
-export  class EmployeeModel {
-  username: String;
-  id: Number;
-  domain: String;
-  salary: Number;
-
+export class EmployeeModel {
+  private username: String;
+  private id: Number;
+  private domain: String;
+  private salary: Number;
 
   get _username() {
     return this.username;

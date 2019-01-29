@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 
 import * as d3 from 'd3';
 import { EmployeeModel } from '../model/employee.model';
+import { CONTEXT } from '@angular/core/src/render3/interfaces/view';
+import { schemeSet3 } from 'd3';
 
 @Component({
   selector: 'app-vertical-bar-chart',
@@ -22,6 +24,8 @@ export class VerticalBarChartComponent implements OnInit {
   g: any;
   // Tooltip element
   toolTip: any;
+// sorting
+sortOrder: any = null;
   // Document data array
   // documentData = [];
 
@@ -48,143 +52,197 @@ export class VerticalBarChartComponent implements OnInit {
   }
 
    getAllUser() {
-    d3.select('.vertical-chart-container').html(' ');
 
-    console.log(this.employeeModel[2]);
-    console.log(this.employeeModel.map(data => data._username));
+    d3.select('.vertical-chart-container').append('select').attr('class', 'order-selection');
+    d3.select('.vertical-chart-container').select('.order-selection').append('option').text('Ascending').attr('value', 'Ascending');
+    d3.select('.vertical-chart-container').select('.order-selection').append('option').text('Descending').attr('value', 'Descending');
 
-    // SVG element creation
-    this.svg = d3
-      .select('.vertical-chart-container')
-      .append('svg')
-      .attr('class', 'bar-chart-svg')
-      .attr('width', '800')
-      .attr('height', '600')
-      .style('border', '1px solid steelblue');
+    d3.select('.vertical-chart-container').append('br');
 
-    // Tooltip element definition
-    this.toolTip = d3
-      .select('.vertical-chart-container')
-      .append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0);
+    d3.select('.vertical-chart-container').select('select').on('change', (baseData, baseIndex, nodes) => {
+          d3.select('.vertical-chart-container').select('svg').remove();
+          // SVG element creation
+          this.svg = d3
+          .select('.vertical-chart-container')
+          .append('svg')
+          .attr('class', 'bar-chart-svg')
+          .attr('width', '800')
+          .attr('height', '600')
+          .style('border', '1px solid steelblue');
 
-    // set up user co-ordinate system for SVG
-    this.svg = d3
-      .select('.vertical-chart-container')
-      .select('svg')
-      .attr('viewBox', '0 0 800 600');
+        // Tooltip element definition
+        this.toolTip = d3
+          .select('.vertical-chart-container')
+          .append('div')
+          .attr('class', 'tooltip')
+          .style('opacity', 0);
 
-    // Append title header in the SVG
-    this.svg
-      .append('text')
-      .attr('transform', 'translate(300,0)')
-      .attr('x', 0)
-      .attr('y', 50)
-      .attr('font-size', '24px')
-      .text('Name vs Salary');
+        // set up user co-ordinate system for SVG
+        this.svg = d3
+          .select('.vertical-chart-container')
+          .select('svg')
+          .attr('viewBox', '0 0 800 600');
 
-    // X-Axis scale
-    this.xScale = d3
-      .scaleBand()
-      .range([0, 700])
-      .domain(this.employeeModel.map(data => data._username.toString()))
-      .padding(0.5);
-    // Y-Axis scale
-    this.yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(this.employeeModel.map (data => data._salary))])
-      .range([500, 0]);
+        // Append title header in the SVG
+        this.svg
+          .append('text')
+          .attr('transform', 'translate(300,0)')
+          .attr('x', 0)
+          .attr('y', 50)
+          .attr('font-size', '24px')
+          .text('Name vs Salary');
 
-    this.line = d3
-      .line()
-      .x(data => {
-        return this.xScale(data['_username']) + 10;
-      })
-      .y(data => this.yScale(data['_salary']));
-      // .x(data => this.xScale(data['username']) + 10)
-      // .y(data => this.yScale(data['salary']));
-    this.linePlot = this.line(this.employeeModel);
+        // X-Axis scale
+        this.xScale = d3
+          .scaleBand()
+          .range([0, 700])
+          .padding(0.5);
+        // Y-Axis scale
+        this.yScale = d3
+          .scaleLinear()
+          .domain([0, d3.max(this.employeeModel.map (data => data._salary))])
+          .range([500, 0]);
 
-    // console.log(this.linePlot);
+          // Sorting rectangle bars
+          if (d3.select(nodes[baseIndex]).property('value') === 'Ascending') {
+            this.sortOrder  = this.employeeModel.sort((a, b) => {
+                return d3.ascending(a._salary.toString(), b._salary.toString());
+            });
+            // console.log(this.sortOrder);
+          } else if (d3.select(nodes[baseIndex]).property('value') === 'Descending') {
+            this.sortOrder = this.employeeModel.sort((a, b) => {
+              return d3.descending(a._salary.toString(), b._salary.toString());
+            });
+            // console.log(this.sortOrder);
+          }
 
-    // Main Graph element creation
-    this.g = this.svg
-      .append('g')
-      .attr('width', '800')
-      .attr('height', '600')
-      .attr('transform', 'translate(0, 0)');
-    // insert x-axis into the graph scale
-    this.g
-      .append('g')
-      .attr('transform', 'translate(50,550)')
-      .call(d3.axisBottom(this.xScale));
+          this.yScale.domain([0, d3.max(this.sortOrder.map (data => data._salary))]);
 
-    // insert y-axis into the graph scale
-    this.g
-      .append('g')
-      .attr('transform', 'translate(49, 50 )')
-      .call(d3.axisLeft(this.yScale));
+          this.xScale.domain(this.employeeModel.map((d) => {
+            return d._username;
+          }));
 
-    this.pathAnimation = this.g
-      .append('path')
-      .attr('transform', 'translate(50, 50)')
-      .datum(this.employeeModel)
-      .attr('fill', 'none')
-      .attr('stroke', 'yellowgreen')
-      .attr('stroke-width', 1.5)
-      .attr('d', this.linePlot);
 
-    // console.log(this.pathAnimation.node().getTotalLength());
-    this.pathLength = this.pathAnimation.node().getTotalLength();
 
-    // line plot animation
-    this.pathAnimation
-      .attr('stroke-dasharray', this.pathLength + ' ' + this.pathLength)
-      .attr('stroke-dashoffset', this.pathLength)
-      .transition()
-      .delay(3000)
-      .duration(5000)
-      .ease(d3.easeLinear)
-      .attr('stroke-dashoffset', 0);
+          // Sorting x-axis
+          // if (d3.select(nodes[baseIndex]).property('value') === 'Ascending') {
+          //   this.sortOrder  = this.employeeModel.sort((a, b) => {
+          //       return d3.ascending(a._username.toString(), b._username.toString());
+          //   });
+          //   console.log(this.sortOrder);
+          // } else if (d3.select(nodes[baseIndex]).property('value') === 'Descending') {
+          //   this.sortOrder = this.employeeModel.sort((a, b) => {
+          //     return d3.descending(a._username.toString(), b._username.toString());
+          //   });
+          //   console.log(this.sortOrder);
+          // }
 
-    // rectangle bar creation
-    this.g
-      .append('g')
-      .attr('class', 'top-bar')
-      .attr('transform', 'translate(50, 50)')
-      .selectAll('.vertical-bar')
-      .data(this.employeeModel)
-      .enter()
-      .append('rect')
-      .attr('class', 'vertical-bar')
-      .on('mouseover', (data, index) => {
-        this.fillOrangeColor(data, index);
-        d3.selectAll('.vertical-bar')
-          .filter(function(this, d, i) {
-            if (index === i) {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .style('fill', 'orange');
-      })
-      .on('mouseout', this.fillBlueColor)
-      .attr('x', d => this.xScale(d._username))
-      .attr('y', d => this.yScale(0))
-      .attr('width', 20)
-      .attr('height', d => 500 - this.yScale(0))
-      .style('fill', 'steelblue');
+          //     this.xScale.domain(this.sortOrder.map((d) => {
+          //       return d._username;
+          //     }));
 
-    this.g
-      .selectAll('rect')
-      .transition()
-      .ease(d3.easeLinear)
-      .delay(d => Math.random() * 1000)
-      .duration(2000)
-      .attr('y', d => this.yScale(d._salary))
-      .attr('height', d => 500 - this.yScale(d._salary));
+              this.line = d3
+              .line()
+              .x(data => {
+                return this.xScale(data['_username']) + 10;
+              })
+              .y(data => this.yScale(data['_salary']));
+              // .x(data => this.xScale(data['username']) + 10)
+              // .y(data => this.yScale(data['salary']));
+            this.linePlot = this.line(this.employeeModel);
+
+            // console.log(this.linePlot);
+
+            // Main Graph element creation
+            this.g = this.svg
+              .append('g')
+              .attr('width', '800')
+              .attr('height', '600')
+              .attr('transform', 'translate(0, 0)');
+            // insert x-axis into the graph scale
+            this.g
+              .append('g')
+              .attr('transform', 'translate(50,550)')
+              .call(d3.axisBottom(this.xScale));
+
+            // insert y-axis into the graph scale
+            this.g
+              .append('g')
+              .attr('transform', 'translate(49, 50 )')
+              .call(d3.axisLeft(this.yScale));
+
+              // HTML in axis
+              // .selectAll('g')
+              // .append('svg:foreignObject')
+              //     .attr('width',tw)
+              //     .attr('height',th)
+              //     .attr('x', tx)
+              //     .attr('y', ty)
+              // .append('xhtml:div')
+              //     .html('');
+
+            this.pathAnimation = this.g
+              .append('path')
+              .attr('transform', 'translate(50, 50)')
+              .datum(this.employeeModel)
+              .attr('fill', 'none')
+              .attr('stroke', 'yellowgreen')
+              .attr('stroke-width', 1.5)
+              .attr('d', this.linePlot);
+
+            // console.log(this.pathAnimation.node().getTotalLength());
+            this.pathLength = this.pathAnimation.node().getTotalLength();
+
+            // line plot animation
+            this.pathAnimation
+              .attr('stroke-dasharray', this.pathLength + ' ' + this.pathLength)
+              .attr('stroke-dashoffset', this.pathLength)
+              .transition()
+              .delay(3000)
+              .duration(5000)
+              .ease(d3.easeLinear)
+              .attr('stroke-dashoffset', 0);
+
+
+
+            // rectangle bar creation
+            this.g
+              .append('g')
+              .attr('class', 'top-bar')
+              .attr('transform', 'translate(50, 50)')
+              .selectAll('.vertical-bar')
+              .data(this.employeeModel)
+              .enter()
+              .append('rect')
+              .attr('class', 'vertical-bar')
+              .on('mouseover', (data, index) => {
+                this.fillOrangeColor(data, index);
+                d3.selectAll('.vertical-bar')
+                  .filter(function(this, d, i) {
+                    if (index === i) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  })
+                  .style('fill', 'orange');
+              })
+              .on('mouseout', this.fillBlueColor)
+              .attr('x', d => this.xScale(d._username))
+              .attr('y', d => this.yScale(0))
+              .attr('width', 20)
+              .attr('height', d => 500 - this.yScale(0))
+              .style('fill', 'steelblue');
+
+            this.g
+              .selectAll('rect')
+              .transition()
+              .ease(d3.easeLinear)
+              .delay(d => Math.random() * 1000)
+              .duration(2000)
+              .attr('y', d => this.yScale(d._salary))
+              .attr('height', d => 500 - this.yScale(d._salary));
+      });
   }
 
   //  onMouseOver event
@@ -217,4 +275,5 @@ export class VerticalBarChartComponent implements OnInit {
       .style('fill', 'steelblue');
     d3.select('.tooltip1').style('display', 'none');
   }
+
 }

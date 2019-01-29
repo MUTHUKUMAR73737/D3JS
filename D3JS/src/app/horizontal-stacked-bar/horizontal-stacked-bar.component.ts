@@ -25,17 +25,19 @@ export class HorizontalStackedBarComponent implements OnInit {
   ngOnInit() {}
 
   async getHorizontalStackedBarChart() {
-    this.employeeData = await d3.csv('../../assets/employee-status.csv');
+    this.employeeData = await d3.csv('../../assets/employee3.csv');
 
     //  Stack shape
-    this.stack = d3
-      .stack()
-      .keys(['2018', '2017', '2016', '2015']);
+    this.stack = d3.stack().keys(['2018', '2017', '2016', '2015']);
 
     // Shape output
     this.stackSeries = this.stack(this.employeeData);
 
-    console.log(this.stackSeries);
+    // console.log(this.stackSeries);
+
+    d3
+    .select('.horizontal-stacked-bar-chart')
+    .html('');
 
     // SVG element
     this.svg = d3
@@ -46,7 +48,7 @@ export class HorizontalStackedBarComponent implements OnInit {
       .attr('width', 800)
       .attr('height', 600)
       .style('border', '1px solid steelblue');
-// User view port
+    // User view port
     this.svg = d3
       .select('.horizontal-stack-bar-svg')
       .attr('viewBox', '0 0 800 600');
@@ -59,14 +61,14 @@ export class HorizontalStackedBarComponent implements OnInit {
       .style('opacity', 0)
       .style('display', 'none');
 
-      // y-scale
+    // y-scale
     this.yScale = d3
       .scaleBand()
       .range([0, 500])
       .domain(this.employeeData.map(data => data.username))
       .padding(0.5);
 
-      // x-scale
+    // x-scale
     this.xScale = d3
       .scaleLinear()
       .domain([
@@ -83,7 +85,7 @@ export class HorizontalStackedBarComponent implements OnInit {
       .attr('height', '800')
       .attr('transform', 'translate(0, 0)');
 
-      // legend
+    // legend
     this.legendary = d3
       .select('.horizontal-stack-bar-svg')
       .append('g')
@@ -92,8 +94,7 @@ export class HorizontalStackedBarComponent implements OnInit {
       .attr('height', '300px')
       .attr('transform', 'translate(650 70)');
 
-
-// legend bars and text
+    // legend bars and text
     d3.selectAll('.horizontal-stack-main-graph')
       .selectAll('.horizontal-stack-bar-legend')
       .data(['2018-Salary', '2017-Salary', '2016-Salary', '2015-Salary'])
@@ -133,7 +134,7 @@ export class HorizontalStackedBarComponent implements OnInit {
       .attr('transform', 'translate(49, 50 )')
       .call(d3.axisLeft(this.yScale));
 
-      // stack layer
+    // stack layer
     this.layer = this.graph
       .selectAll('.horizontal-layer')
       .data(this.stackSeries)
@@ -145,7 +146,7 @@ export class HorizontalStackedBarComponent implements OnInit {
         return this.color(i);
       });
 
-      // stack bar
+    // stack bar
     this.layer
       .selectAll('.horizontal-stack-bar')
       .data(function(d, i) {
@@ -155,14 +156,15 @@ export class HorizontalStackedBarComponent implements OnInit {
       .append('rect')
       .attr('class', 'horizontal-stack-bar')
       .attr('x', (d, i) => {
-        return this.xScale(d[0]);
+        return this.xScale(0);
+        // return this.xScale(d[0]);
       })
       .attr('y', (d, i) => {
         return this.yScale(d.data.username);
       })
       .attr('height', 30)
       .attr('width', (d, i) => {
-        return this.xScale(d[1]) - this.xScale(d[0]);
+        return this.xScale(0) - this.xScale(0);
       })
       .on('mouseover', (data, index) => {
         this.getToolTip(data, index);
@@ -170,6 +172,15 @@ export class HorizontalStackedBarComponent implements OnInit {
       .on('mouseout', (data, index) => {
         d3.select('.tooltip').style('display', 'none');
       });
+
+    this.layer
+      .selectAll('rect')
+      .transition()
+      .delay(1000)
+      .duration(3000)
+      .ease(d3.easeLinear)
+      .attr('x', (d, i) => this.xScale(d[0]))
+      .attr('width', (d, i) => this.xScale(d[1]) - this.xScale(d[0]));
   }
 
   // tooltip
@@ -180,8 +191,7 @@ export class HorizontalStackedBarComponent implements OnInit {
         this.toolTip
           .html(
             `<div>Salary: ${data[1] - data[0]}</div>
-            `
-          )
+            `)
           .style('left', `${d3.event.layerX - 10}px`)
           .style('top', `${d3.event.layerY + 10}px`)
           .style('display', 'inline');

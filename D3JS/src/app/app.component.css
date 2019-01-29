@@ -25,13 +25,35 @@
   margin: 5px;
   box-shadow: none;
   overflow: hidden !important;
+  background:white;
+  border: 1px solid steelblue;
+  color: #435CC8;
+  font-weight: 500;
 }
 :host /deep/ .tooltip {
   font-weight: bold;
   padding: 12px;
-  background: #435CC8;
-  color: #fff;
+  background: whitesmoke;
+  color: steelblue;
   border-radius: 2px;
+  border: 1px solid rebeccapurple;
+}
+
+:host /deep/ .tooltip2 {
+  font-weight: bold;
+  padding: 0px !important;
+  border-radius: 2px;
+  border: 1px solid steelblue;
+}
+
+:host /deep/ .tooltip2::after {
+  content: "";
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent transparent rebeccapurple;
+  position: absolute;
+  right:-20px;
+  top:40%;
 }
 
 :host /deep/ .tooltip1 {
@@ -81,7 +103,15 @@
   font-family: 'Headland One', serif;
 }
 
-:host /deep/ .tooltip1 .header {
+:host /deep/ .tooltip1 .header{
+  text-align: center !important;
+  padding:5px 5px;
+  background: #435CC8;
+  color: white;
+  font-family: 'Spectral SC', serif;
+}
+
+:host /deep/ .tooltip2 .header {
   text-align: center !important;
   padding:5px 5px;
   background: #435CC8;

@@ -17,8 +17,6 @@ export class GroupedBarChartComponent implements OnInit {
   x1ScaleBandwidth: number;
   subGraph: any;
   color = d3.scaleOrdinal(d3.schemeSet2);
-  userNameArray = new Array();
-  salaryYearArray = new Array();
   toolTip: any;
   legend: any;
 
@@ -31,6 +29,10 @@ export class GroupedBarChartComponent implements OnInit {
   }
 
   getGroupChart() {
+    d3
+    .select('.group-bar-chart-container')
+    .html('');
+
     // SVG element
     this.svg = d3
       .select('.group-bar-chart-container')
@@ -51,28 +53,20 @@ export class GroupedBarChartComponent implements OnInit {
       .style('opacity', 0)
       .style('display', 'none');
 
-    // Username array
-    this.userNameArray = this.employeeData.map(function(d) {
-      return d.username;
-    });
-
-    // Salary array
-    this.salaryYearArray = this.employeeData[0].salary.map(function(d) {
-      return d.year;
-    });
-
-    // console.log(this.userNameArray);
-
     // x-scale
     this.xScale = d3
       .scaleBand()
       .range([0, 500])
-      .domain(this.userNameArray);
+      .domain(this.employeeData.map(function(d) {
+        return d.username;
+      }));
 
     // x1-scale(grouping)
     this.x1Scale = d3
       .scaleLinear()
-      .domain(this.salaryYearArray)
+      .domain(this.employeeData[0].salary.map(function(d) {
+        return d.year;
+      }))
       .range([0, this.xScale.bandwidth()]);
 
     // y-scale
@@ -164,6 +158,7 @@ export class GroupedBarChartComponent implements OnInit {
       .transition()
       .delay(d => Math.random() * 1000)
       .duration(2000)
+      .ease(d3.easeLinear)
       .attr('y', d => this.yScale(d.value))
       .attr('height', d => 500 - this.yScale(d.value));
 
